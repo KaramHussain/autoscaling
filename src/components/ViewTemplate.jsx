@@ -52,7 +52,7 @@ const ViewTemplate = () => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{selectedIndex}</h5>
+                <h5 className="modal-title text-warning">Launch Template</h5>
                 <button
                   type="button"
                   className="btn-close"
@@ -60,54 +60,33 @@ const ViewTemplate = () => {
                 ></button>
               </div>
               <div className="modal-body">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-sm-6">
-                      <div className="list-group">
-                        <div className="list-group-item">Row 1, Column 1</div>
-                        <div className="list-group-item">Row 2, Column 1</div>
-                        <div className="list-group-item">Row 3, Column 1</div>
-                        <div className="list-group-item">Row 4, Column 1</div>
-                        <div className="list-group-item">Row 5, Column 1</div>
-                      </div>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="list-group">
-                        <div className="list-group-item">Row 1, Column 2</div>
-                        <div className="list-group-item">Row 2, Column 2</div>
-                        <div className="list-group-item">Row 3, Column 2</div>
-                        <div className="list-group-item">Row 4, Column 2</div>
-                        <div className="list-group-item">Row 5, Column 2</div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="property">
+                  <span className="property-name">Launch Template Name:</span>
+                  <span className="property-value">{names[selectedIndex - 1].LaucnhTemplateName}</span>
+                </div>
+                <div className="property">
+                  <span className="property-name">AMI ID:</span>
+                  <span className="property-value">{names[selectedIndex - 1].amiId}</span>
+                </div>
+                <div className="property">
+                  <span className="property-name">Key Pair:</span>
+                  <span className="property-value">{names[selectedIndex - 1].keyPair}</span>
+                </div>
+                <div className="property">
+                  <span className="property-name">Subnet ID:</span>
+                  <span className="property-value">{names[selectedIndex - 1].subnetId}</span>
+                </div>
+                <div className="property">
+                  <span className="property-name">Security Group</span>
+                  <span className="property-value">{names[selectedIndex - 1].securityGroup}</span>
+                </div>
 
-                  <div className="row">
-                    <div className="col">
-                      <div className="list-group">
-                        <div className="list-group-item">
-                          Additional Row 1, Column 1
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col">
-                      <div className="list-group">
-                        <div className="list-group-item">
-                          Additional Row 2, Column 1
-                        </div>
-                      </div>
-                    </div>
+                <div className="propertyUserData">
+                  <span className="property-name-userdata">User Data:</span>
+                  <div className="user-data-box">
+                    {names[selectedIndex - 1].userData}
                   </div>
                 </div>
-                <p>{names[selectedIndex - 1].LaucnhTemplateName}</p>
-                <p>{names[selectedIndex - 1].amiId}</p>
-                <p>{names[selectedIndex - 1].keyPair}</p>
-                <p>{names[selectedIndex - 1].securityGroup}</p>
-                <p>{names[selectedIndex - 1].subnetId}</p>
-                <pre>{names[selectedIndex - 1].userData}</pre>
               </div>
             </div>
           </div>
