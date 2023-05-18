@@ -26,9 +26,30 @@ function App() {
             </li>
           </ul>
         </div>
+        <div className="box-container">
+          <h5 className="pb-3">Auto Scaling Group</h5>
+          <ul className="nav-links">
+            <li>
+              <Link to="/createtemplate" className="link">
+                <div className="row">
+                  <div className="text">Create AutoScaling Group</div>
+                </div>
+              </Link>
+            </li>
+            <li>
+              <Link to="/viewtemplate" className="link">
+                <div className="row">
+                  <div className="text">View AutoScaling Group</div>
+                </div>
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="main-content">
         <Routes>
+          <Route path="/createtemplate" element={<LaunchTemplateForm/>} />
+          <Route path="/viewtemplate" element={<ViewTemplate/>} />
           <Route path="/createtemplate" element={<LaunchTemplateForm/>} />
           <Route path="/viewtemplate" element={<ViewTemplate/>} />
         </Routes>

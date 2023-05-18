@@ -34,7 +34,7 @@ const ViewTemplate = () => {
 
   return (
     <div className="container mt-4">
-      <h1>Random Name List</h1>
+      <h1>Launch Templates</h1>
       <ul className="list-group name-list">
         {names.map((name, index) => (
           <li
