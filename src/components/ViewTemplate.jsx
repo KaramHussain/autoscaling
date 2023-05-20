@@ -69,18 +69,21 @@ const ViewTemplate = () => {
                   <span className="property-value">{names[selectedIndex - 1].amiId}</span>
                 </div>
                 <div className="property">
-                  <span className="property-name">Key Pair:</span>
-                  <span className="property-value">{names[selectedIndex - 1].keyPair}</span>
+                  <span className="property-name">Instance Type:</span>
+                  <span className="property-value">{names[selectedIndex - 1].instanceType}</span>
                 </div>
                 <div className="property">
-                  <span className="property-name">Subnet ID:</span>
-                  <span className="property-value">{names[selectedIndex - 1].subnetId}</span>
+                  <span className="property-name">Key Pair:</span>
+                  <span className="property-value">{names[selectedIndex - 1].keyPair}</span>
                 </div>
                 <div className="property">
                   <span className="property-name">Security Group</span>
                   <span className="property-value">{names[selectedIndex - 1].securityGroup}</span>
                 </div>
-
+                <div className="property">
+                  <span className="property-name">EBS Volume</span>
+                  <span className="property-value">{names[selectedIndex - 1].ebsVolumeSize} GB {names[selectedIndex - 1].ebsVolumeType.toUpperCase()}</span>
+                </div>
                 <div className="propertyUserData">
                   <span className="property-name-userdata">User Data:</span>
                   <div className="user-data-box">
