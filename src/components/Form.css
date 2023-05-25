@@ -47,7 +47,7 @@
   color: #727272;
 }
 
-.launch-form button {
+.LaunchTemplatebutton {
   background-color: #f5db76;
   color: #2d2d2d;
   border: none;
@@ -56,7 +56,7 @@
   font-weight: bold;
 }
 
-.launch-form button:hover {
+.LaunchTemplatebutton:hover {
   background-color: #efb612;
   cursor: pointer;
 }

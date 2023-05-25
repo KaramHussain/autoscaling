@@ -2,6 +2,7 @@ import { Route, Routes, Link } from "react-router-dom";
 import LaunchTemplateForm from "./components/LaunchTemplateForm";
 import './App.css'
 import ViewTemplate from "./components/ViewTemplate";
+import AutoScalingForm from "./components/AutoScalingForm";
 function App() {
   return (
     <div className="body">
@@ -30,7 +31,7 @@ function App() {
           <h5 className="pb-3">Auto Scaling Group</h5>
           <ul className="nav-links">
             <li>
-              <Link to="/createtemplate" className="link">
+              <Link to="/createautoscaling" className="link">
                 <div className="row">
                   <div className="text">Create AutoScaling Group</div>
                 </div>
@@ -50,7 +51,7 @@ function App() {
         <Routes>
           <Route path="/createtemplate" element={<LaunchTemplateForm/>} />
           <Route path="/viewtemplate" element={<ViewTemplate/>} />
-          <Route path="/createtemplate" element={<LaunchTemplateForm/>} />
+          <Route path="/createautoscaling" element={<AutoScalingForm/>} />
           <Route path="/viewtemplate" element={<ViewTemplate/>} />
         </Routes>
       </div>

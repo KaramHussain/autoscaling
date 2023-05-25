@@ -1,0 +1,62 @@
+.launch-form label {
+  display: inline;
+  width: 150px;
+  min-width: 136px;
+}
+
+.form-group {
+  display: flex !important;
+}
+
+.launch-form select::placeholder,
+.launch-form input::placeholder,
+.launch-form textarea::placeholder {
+  color: #727272;
+}
+
+.AutScalingbutton {
+  background-color: #eec90e !important;
+  color: #2d2d2d;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+.AutScalingbutton:hover {
+  background-color: #efb612 !important;
+  cursor: pointer;
+}
+
+
+.lablegb {
+  padding-left: 10px !important;
+  font-size: x-large;
+}
+
+.selected {
+  background-color: #77dd77 !important;
+}
+.subnetButton {
+  border: 1px solid #9c9c9c !important;
+  border-radius: 3px;
+  margin: 10px 7px !important;
+  width: 100% !important;
+  font-size: 0.9em;
+}
+.subnetBoxul{
+  width: 100%;
+  max-width: 450px !important;
+  min-width: 330px !important;
+}
+.line1 {
+  display: flex;
+}
+.line2 {
+  display: flex;
+}
+.line1 div, .line2 div {
+  padding: 2px 5%;
+}
+.rightside{
+  padding-right: 56px !important;
+}

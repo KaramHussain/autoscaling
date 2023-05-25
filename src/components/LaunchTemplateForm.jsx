@@ -187,7 +187,7 @@ const LaunchTemplateForm = () => {
         
         
         <div className="form-group mt-3">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="LaunchTemplatebutton">
             Create
           </button>
         </div>
