@@ -23,10 +23,12 @@ const loadBalancers = [
 
 const apiGatewayEndpoint =
   "https://7wmmb7rm3i.execute-api.us-east-1.amazonaws.com/test-environment/vpc";
+  const launchtemplateApiGateway =
+  "https://7wmmb7rm3i.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
 
 const AutoScalingForm = () => {
   const [AutoScalingName, setAutoScalingName] = useState("");
-  const [LaunchTemplate, setLaunchTemplate] = useState();
+  const [LaunchTemplate, setLaunchTemplate] = useState("");
   const [vpcId, setVpcId] = useState();
   const [subnetId, setSubnetId] = useState([]);
   const [loadBalancer, setloadBalancer] = useState("");
@@ -35,9 +37,12 @@ const AutoScalingForm = () => {
   const [minimumCapacity, setminimumCapacity] = useState("0");
   const [maximumCapacity, setmaximumCapacity] = useState("0");
 
+
   // temperory data getting from api calls
   const [VPC, setVPC] = useState([]);
   const [subnet, setSubnet] = useState([]);
+  const [launchTemplateArray, setlaunchTemplateArray] = useState([]);
+
 
   const handleItemClick = (id) => {
     console.log(id);
@@ -83,7 +88,7 @@ const AutoScalingForm = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchVpcData = async () => {
       try {
         const response = await axios.get(apiGatewayEndpoint);
         const data = JSON.parse(response.data.body);
@@ -96,8 +101,18 @@ const AutoScalingForm = () => {
         console.log(error);
       }
     };
-
-    fetchData();
+    const fetchLaunchTemplate = async () => {
+      try {
+        const response = await axios.get(launchtemplateApiGateway);
+        const data = JSON.parse(response.data.body);
+        setlaunchTemplateArray(Object.values(data));
+        console.log(launchTemplateArray);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchLaunchTemplate();
+    fetchVpcData();
   }, []);
   //   function validation() {
   //     if (!LaucnhTemplateName) return "Write a Template Name";
@@ -138,7 +153,7 @@ const AutoScalingForm = () => {
           />
         </div>
 
-        {/* <div className="form-group">
+        <div className="form-group">
           <label htmlFor="LaunchTemplate">Template Name</label>
           <select
             id="LaunchTemplate"
@@ -146,13 +161,13 @@ const AutoScalingForm = () => {
             value={LaunchTemplate}
             onChange={(event) => setLaunchTemplate(event.target.value)}
           >
-            {templateNames.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.value}
+            {launchTemplateArray.map((option) => (
+              <option key={option.LaucnhTemplateName} value={option.LaucnhTemplateName}>
+                {option.LaucnhTemplateName}
               </option>
             ))}
           </select>
-        </div> */}
+        </div>
 
         <div className="form-group">
           <label htmlFor="loadbalancer">VPC</label>
