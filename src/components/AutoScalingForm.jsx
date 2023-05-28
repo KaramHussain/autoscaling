@@ -3,17 +3,6 @@ import "./AutoScalingForm.css";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 
-const templateNames = [
-  { value: "-- Choose template --" },
-  { value: "Template1" },
-  { value: "Template2" },
-];
-
-const VPCs = [
-  { value: "-- Select VPC --" },
-  { value: "VPC1" },
-  { value: "VPC2" },
-];
 
 const loadBalancers = [
   { value: "-- Select LoadBalancer --" },
