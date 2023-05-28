@@ -3,22 +3,17 @@ import "./AutoScalingForm.css";
 import axios from "axios";
 import { ToastContainer } from "react-toastify";
 
-
-const loadBalancers = [
-  { value: "-- Select LoadBalancer --" },
-  { value: "ELB 1" },
-  { value: "ELB 2" },
-];
-
+const submitGatewayEndpoint =
+  "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/autoscalinggroup";
 const apiGatewayEndpoint =
-  "https://7wmmb7rm3i.execute-api.us-east-1.amazonaws.com/test-environment/vpc";
-  const launchtemplateApiGateway =
-  "https://7wmmb7rm3i.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
+  "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/vpc";
+const launchtemplateApiGateway =
+  "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
 
 const AutoScalingForm = () => {
   const [AutoScalingName, setAutoScalingName] = useState("");
   const [LaunchTemplate, setLaunchTemplate] = useState("");
-  const [vpcId, setVpcId] = useState();
+  const [vpcId, setVpcId] = useState("");
   const [subnetId, setSubnetId] = useState([]);
   const [loadBalancer, setloadBalancer] = useState("");
   const [warmUp, setwarmUp] = useState("0");
@@ -26,12 +21,10 @@ const AutoScalingForm = () => {
   const [minimumCapacity, setminimumCapacity] = useState("0");
   const [maximumCapacity, setmaximumCapacity] = useState("0");
 
-
   // temperory data getting from api calls
   const [VPC, setVPC] = useState([]);
   const [subnet, setSubnet] = useState([]);
   const [launchTemplateArray, setlaunchTemplateArray] = useState([]);
-
 
   const handleItemClick = (id) => {
     console.log(id);
@@ -47,25 +40,26 @@ const AutoScalingForm = () => {
     //   displayToast(validation());
     // }
     event.preventDefault();
-    //   const params = {
-    //     AutoScalingName,
-    //     LaunchTemplate,
-    //     VPC,
-    //     loadBalancer,
-    //     warmUp,
-    //     desiredCapacity,
-    //     minimumCapacity,
-    //     maximumCapacity,
-    //   };
-    //   const api = apiGatewayEndpoint;
-    //   axios
-    //     .post(api, JSON.stringify(params))
-    //     .then((response) => {
-    //       console.log(response.data.body);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
+    const params = {
+      AutoScalingName,
+      LaunchTemplate,
+      VPC,
+      subnetId,
+      loadBalancer,
+      warmUp,
+      desiredCapacity,
+      minimumCapacity,
+      maximumCapacity,
+    };
+      const api = submitGatewayEndpoint;
+      axios
+        .post(api, JSON.stringify(params))
+        .then((response) => {
+          console.log(response.data.body);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   };
 
   function setSubnetValue(value) {
@@ -151,7 +145,10 @@ const AutoScalingForm = () => {
             onChange={(event) => setLaunchTemplate(event.target.value)}
           >
             {launchTemplateArray.map((option) => (
-              <option key={option.LaucnhTemplateName} value={option.LaucnhTemplateName}>
+              <option
+                key={option.LaucnhTemplateName}
+                value={option.LaucnhTemplateName}
+              >
                 {option.LaucnhTemplateName}
               </option>
             ))}
@@ -191,11 +188,17 @@ const AutoScalingForm = () => {
               >
                 <div className="subnetListBox">
                   <div className="line1">
-                    <div className="availabilityZone">{item.AvailabilityZone}</div>
+                    <div className="availabilityZone">
+                      {item.AvailabilityZone}
+                    </div>
                     <div>{item.SubnetId}</div>
                   </div>
                   <div className="line2">
-                    {item.DefaultForAz == true ? <div  className="rightside">Default</div> : ""}
+                    {item.DefaultForAz == true ? (
+                      <div className="rightside">Default</div>
+                    ) : (
+                      ""
+                    )}
                     <div>{item.CidrBlock}</div>
                   </div>
                 </div>
@@ -204,21 +207,16 @@ const AutoScalingForm = () => {
           </ul>
         </div>
 
-        {/* <div className="form-group">
-          <label htmlFor="loadbalancer">Load Balancer</label>
-          <select
-            id="loadbalancer"
+        <div className="form-group">
+          <label htmlFor="loadbalancer-name">LoadBalancer Name</label>
+          <input
+            type="text"
+            id="loadbalancer-name"
             className="form-control"
             value={loadBalancer}
             onChange={(event) => setloadBalancer(event.target.value)}
-          >
-            {loadBalancers.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.value}
-              </option>
-            ))}
-          </select>
-        </div> */}
+          />
+        </div>
 
         <div className="form-group">
           <label htmlFor="warmup">Warm Up</label>

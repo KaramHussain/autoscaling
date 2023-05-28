@@ -3,7 +3,7 @@ import "./viewtemplate.css";
 import axios from "axios";
 
 const apiGatewayEndpoint =
-  "https://7wmmb7rm3i.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
+  "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
 
 const ViewTemplate = () => {
   const [names, setNames] = useState([]);
