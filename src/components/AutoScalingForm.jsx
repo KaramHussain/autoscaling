@@ -43,7 +43,7 @@ const AutoScalingForm = () => {
     const params = {
       AutoScalingName,
       LaunchTemplate,
-      VPC,
+      vpcId,
       subnetId,
       loadBalancer,
       warmUp,
