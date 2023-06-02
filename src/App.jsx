@@ -3,6 +3,7 @@ import LaunchTemplateForm from "./components/LaunchTemplateForm";
 import './App.css'
 import ViewTemplate from "./components/ViewTemplate";
 import AutoScalingForm from "./components/AutoScalingForm";
+import ViewAutoScaling from "./components/ViewAutoScaling";
 function App() {
   return (
     <div className="body">
@@ -38,7 +39,7 @@ function App() {
               </Link>
             </li>
             <li>
-              <Link to="/viewtemplate" className="link">
+              <Link to="/viewautoscaling" className="link">
                 <div className="row">
                   <div className="text">View AutoScaling Group</div>
                 </div>
@@ -52,7 +53,7 @@ function App() {
           <Route path="/createtemplate" element={<LaunchTemplateForm/>} />
           <Route path="/viewtemplate" element={<ViewTemplate/>} />
           <Route path="/createautoscaling" element={<AutoScalingForm/>} />
-          <Route path="/viewtemplate" element={<ViewTemplate/>} />
+          <Route path="/viewautoscaling" element={<ViewAutoScaling/>} />
         </Routes>
       </div>
     </div>

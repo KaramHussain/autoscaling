@@ -1,0 +1,13 @@
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 40px;
+}
+.dnsUrl {
+  color: rgb(242, 144, 23) !important;
+  text-decoration: none !important;
+}
+.label {
+  padding-bottom: 20px;
+  font-size: 15px;
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./AutoScalingForm.css";
 import axios from "axios";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const submitGatewayEndpoint =
   "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/autoscalinggroup";
@@ -36,21 +36,21 @@ const AutoScalingForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    // if (validation() != true) {
-    //   displayToast(validation());
-    // }
     event.preventDefault();
-    const params = {
-      AutoScalingName,
-      LaunchTemplate,
-      vpcId,
-      subnetId,
-      loadBalancer,
-      warmUp,
-      desiredCapacity,
-      minimumCapacity,
-      maximumCapacity,
-    };
+    if (validation() != true) {
+      displayToast(validation());
+    } else {
+      const params = {
+        AutoScalingName,
+        LaunchTemplate,
+        vpcId,
+        subnetId,
+        loadBalancer,
+        warmUp,
+        desiredCapacity,
+        minimumCapacity,
+        maximumCapacity,
+      };
       const api = submitGatewayEndpoint;
       axios
         .post(api, JSON.stringify(params))
@@ -60,6 +60,7 @@ const AutoScalingForm = () => {
         .catch((error) => {
           console.log(error);
         });
+    }
   };
 
   function setSubnetValue(value) {
@@ -78,7 +79,7 @@ const AutoScalingForm = () => {
         const subnetArray = Object.values(data);
         setVPC(subnetArray[0]);
         setSubnet(subnetArray[0][0].subnet);
-        setVpcId(VPC.vpcId);
+        setVpcId(subnetArray[0][0].VpcId);
         setSubnetValue(VPC.vpcId);
       } catch (error) {
         console.log(error);
@@ -88,8 +89,9 @@ const AutoScalingForm = () => {
       try {
         const response = await axios.get(launchtemplateApiGateway);
         const data = JSON.parse(response.data.body);
-        setlaunchTemplateArray(Object.values(data));
-        console.log(launchTemplateArray);
+        const temp = Object.values(data);
+        setlaunchTemplateArray(temp);
+        if(launchTemplateArray) setLaunchTemplate(temp[0].LaucnhTemplateName)
       } catch (error) {
         console.log(error);
       }
@@ -97,26 +99,27 @@ const AutoScalingForm = () => {
     fetchLaunchTemplate();
     fetchVpcData();
   }, []);
-  //   function validation() {
-  //     if (!LaucnhTemplateName) return "Write a Template Name";
-  //     if (!amiId) return "Write an AMI id";
-  //     if (instanceType === "-- Choose Instance Type --") return "Choose an Instance Type";
-  //     if (ebsVolumeSize<8) return "Volume size must be greater or equal to 8";
 
-  //     return true;
-  //   }
+  function validation() {
+    if (!AutoScalingName) return "Write Auto Scaling Group Name";
+    else if (!subnetId.length) return "Choose a Subnet";
+    else if (!loadBalancer) return "Enter a name for Load Balancer";
+    else if (!maximumCapacity < minimumCapacity)
+      return "Minimum Capacity cant be greater than Maximum Capacity";
+    else return true;
+  }
 
-  //   function displayToast(message) {
-  //     toast.error(message, {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //       autoClose: 3000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //     });
-  //   }
+  function displayToast(message) {
+    toast.error(message, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
 
   return (
     <>
@@ -184,7 +187,10 @@ const AutoScalingForm = () => {
                 className={`subnetButton list-group-item list-group-item-action ${
                   subnetId.includes(item.SubnetId) ? "selected" : ""
                 }`}
-                onClick={() => handleItemClick(item.SubnetId)}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleItemClick(item.SubnetId);
+                }}
               >
                 <div className="subnetListBox">
                   <div className="line1">
