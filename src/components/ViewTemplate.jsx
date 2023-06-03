@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./viewtemplate.css";
 import axios from "axios";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const apiGatewayEndpoint =
   "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/launchtemplate";
@@ -8,7 +10,7 @@ const apiGatewayEndpoint =
 const ViewTemplate = () => {
   const [names, setNames] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(null);
-
+  const [open, setOpen] = useState(true);
   const handleClick = (index) => {
     setSelectedIndex(index + 1);
   };
@@ -23,7 +25,7 @@ const ViewTemplate = () => {
         const response = await axios.get(apiGatewayEndpoint);
         const data = JSON.parse(response.data.body);
         setNames(Object.values(data));
-        console.log(data);
+        setOpen(false)
       } catch (error) {
         console.log(error);
       }
@@ -34,6 +36,12 @@ const ViewTemplate = () => {
 
   return (
     <div className="container mt-4">
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <h1>Launch Templates</h1>
       <ul className="list-group name-list">
         {names.map((name, index) => (

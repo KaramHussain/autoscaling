@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="body">
       <div className="sidebar">
-        <h2 className="text-warning p-5">AutoScaling</h2>
+        <h2 className="pt-5">AutoScaling</h2>
         <div className="box-container">
           <h5 className="pb-3">Template</h5>
           <ul className="nav-links">

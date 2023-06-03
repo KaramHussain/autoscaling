@@ -4,12 +4,12 @@
   height: 100%;
 }
 .sidebar {
-  width: auto;
+  width: 350px;
   height: 100vh;
-  background-color: #545555;
+  background-color: #000000da;
   padding: 20px;
-  border: 1px solid #ccc;
-  color: #fff;
+  border: 1px solid #e2dddd;
+  color: #ffb731;
 }
 
 .main-content {
@@ -21,7 +21,7 @@
 
 
 .box-container {
-  margin-top: 90px;
+  margin-top: 60px;
   width: 100%;
   border-bottom: 1px solid #89a0a7;
 }
@@ -37,11 +37,11 @@
 
 .nav-links {
   list-style-type: none;
-  padding: 0;
+  padding: 0px;
 }
 .link {
   text-decoration: none;
-  color: #c0bfbf;
+  color: #f3f0e8;
 }
 
 .link :hover{

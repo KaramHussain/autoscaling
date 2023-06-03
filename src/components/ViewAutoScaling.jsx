@@ -10,6 +10,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -26,15 +28,14 @@ function ViewAutoScaling() {
   const [instances, setInstances] = useState([]);
   const [loadBalancer, setLoadBalancer] = useState([]);
   const [targetGroup, setTargetGroup] = useState([]);
-
-
+  const [open, setOpen] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(apiGatewayEndpoint);
         const data = JSON.parse(response.data.body);
         setScalingGroup(Object.values(data));
-        getAutoScalingStatus();
+        setOpen(false)
       } catch (error) {
         console.log(error);
       }
@@ -42,9 +43,10 @@ function ViewAutoScaling() {
     fetchData();
   }, []);
 
-  const getAutoScalingStatus = async () => {
+  const getAutoScalingStatus = async (name) => {
+    setOpen(true)
     let params = {
-      AutoScalingName: selectedRow,
+      AutoScalingName: name,
     };
     const autoScalingStatusApi =
       "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/autoscalingstatus";
@@ -54,9 +56,12 @@ function ViewAutoScaling() {
         const dataresponse = JSON.parse(response.data.body);
         const data = Object.values(dataresponse);
         setInstances(data[2]);
-        setLoadBalancer(data[1]['LoadBalancerDetails'])
+        setLoadBalancer(data[1]["LoadBalancerDetails"]);
+        setTargetGroup(data[1]["TargetGroupDetails"]);
+
         // console.log(instances);
         // console.log(instanceArray[2][0]['InstanceId'])
+        setOpen(false)
       })
       .catch((error) => {
         console.log(error);
@@ -65,8 +70,7 @@ function ViewAutoScaling() {
 
   const handleRowClick = (name) => {
     setSelectedRow(name);
-    getAutoScalingStatus();
-
+    getAutoScalingStatus(name);
   };
 
   return (
@@ -108,17 +112,17 @@ function ViewAutoScaling() {
           </Table>
         </TableContainer>
       </div>
-      <div className="m-4">
-        <div className="cardContainer">
+      <div className="mt-4">
+        <div className="cardContainer mb-5">
           {instances.map((instance, index) => (
             <Card
               sx={{
                 maxWidth: 700,
-                width: 400,
+                width: 320,
                 margin: "10px",
-                // backgroundColor: "#777",
+                // backgroundColor: "#00001",
                 // color: "#fff",
-                border: "1px solid #ccc !important",
+                boxShadow: "0px 0px 5px #000",
               }}
               className="cardImage"
               key={instance.InstanceId}
@@ -126,40 +130,47 @@ function ViewAutoScaling() {
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingTop: "40px",
-                  paddingBottom: "40px",
-                  backgroundColor: "rgba(255, 255, 255)",
+                  paddingTop: "10px",
+                  paddingBottom: "10px",
+                  borderBottom: "1px solid #bbb !important",
                 }}
               >
                 <CardMedia
                   className="image"
                   sx={{
-                    height: 80,
-                    width: 80,
+                    height: 50,
+                    width: 50,
+                    marginLeft: 2,
+                    marginRight: 5,
                   }}
                   image={ec2Logo}
                   title="green iguana"
                 />
+                <Typography
+                  sx={{
+                    paddingTop: 1,
+                  }}
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                >
+                  Server {index + 1}
+                </Typography>
               </Box>
               <CardContent>
-                <Typography gutterBottom variant="h6" component="div">
-                  Instance {index + 1}
-                </Typography>
                 <Typography
                   gutterBottom
                   sx={{ display: "flex", alignItems: "center" }}
                 >
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
-                    Instance Id:
+                    Id:
                   </span>
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     {instance["InstanceId"]}
                   </span>
@@ -171,13 +182,13 @@ function ViewAutoScaling() {
                 >
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
-                    ImageId:
+                    AMI:
                   </span>
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     {instance["ImageId"]}
                   </span>
@@ -188,13 +199,13 @@ function ViewAutoScaling() {
                 >
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
-                    InstanceType:
+                    Type:
                   </span>
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     {instance["InstanceType"]}
                   </span>
@@ -205,13 +216,13 @@ function ViewAutoScaling() {
                 >
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     Zone:
                   </span>
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     {instance["Placement"]["AvailabilityZone"]}
                   </span>
@@ -222,30 +233,110 @@ function ViewAutoScaling() {
                 >
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     SubnetId:
                   </span>
                   <span
                     className="label"
-                    style={{ display: "inline-block", minWidth: "120px" }}
+                    style={{ display: "inline-block", minWidth: "80px" }}
                   >
                     {instance["SubnetId"]}
                   </span>
                 </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  {instance["PublicDnsName"] ? (
+                    <a href={"http://" + instance["PublicDnsName"]}>
+                      {instance["PublicDnsName"]}
+                    </a>
+                  ) : null}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <span
+                    className="label"
+                    style={{ display: "inline-block", minWidth: "80px" }}
+                  >
+                    <Button color="success" className="pt-1 p-0 m-0">
+                      {instance["PublicDnsName"] ? (
+                        "Running"
+                      ) : (
+                        <span className="pt-5 text-danger">Stopped</span>
+                      )}
+                    </Button>
+                  </span>
+                </Typography>
               </CardContent>
-              <CardActions>
-                <Button color="success">Running</Button>
-              </CardActions>
             </Card>
           ))}
         </div>
-        <div className="lower section">
-          <div className="loadBalancer">
-            {loadBalancer['LoadBalancerName']}
+        {instances.length > 0 ? (
+          <div className="lower section">
+            <h4>Elastic Load Balancer</h4>
+            <div className="loadBalancer">
+              <div className="elbRow">
+                <div className="elblabel">Name</div>
+                <div className="elbdata">
+                  {loadBalancer["LoadBalancerName"]}
+                </div>
+              </div>
+              <div className="elbRow">
+                <div className="elblabel">Arn</div>
+                <div className="elbdata">{loadBalancer["LoadBalancerArn"]}</div>
+              </div>
+              <div className="elbRow">
+                <div className="elblabel">DNS</div>
+                <div className="elbdata">
+                  <a href={"http://" + loadBalancer["DNSName"]}>
+                    {loadBalancer["DNSName"]}
+                  </a>
+                </div>
+              </div>
+              <div className="elbRow">
+                <div className="elblabel">Vpc Id</div>
+                <div className="elbdata">{loadBalancer["VpcId"]}</div>
+              </div>
+              <div className="elbRow">
+                <div className="elblabel">State</div>
+                <div className="elbdata">{loadBalancer["State"]["Code"]}</div>
+              </div>
+            </div>
+            <div className="TargetGroup mt-4 pb-"></div>
+            <h4>Target Group</h4>
+            <div className="elbRow">
+              <div className="elblabel">Name</div>
+              <div className="elbdata">{targetGroup["TargetGroupName"]}</div>
+            </div>
+            <div className="elbRow">
+              <div className="elblabel">ARN</div>
+              <div className="elbdata">{targetGroup["TargetGroupArn"]}</div>
+            </div>
+            <div className="elbRow">
+              <div className="elblabel">Target Type</div>
+              <div className="elbdata">{targetGroup["TargetType"]}</div>
+            </div>
+            <div className="elbRow">
+              <div className="elblabel">Protocol</div>
+              <div className="elbdata">{targetGroup["Protocol"]}</div>
+            </div>
+            <div className="elbRow">
+              <div className="elblabel">Port</div>
+              <div className="elbdata">{targetGroup["Port"]}</div>
+            </div>
           </div>
-          <div className="TargetGroup"></div>
-        </div>
+        ) : null}
+        
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </div>
     </>
   );

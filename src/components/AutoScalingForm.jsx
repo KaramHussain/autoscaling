@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import "./AutoScalingForm.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const submitGatewayEndpoint =
   "https://082ff5fu6g.execute-api.us-east-1.amazonaws.com/test-environment/autoscalinggroup";
@@ -15,11 +17,10 @@ const AutoScalingForm = () => {
   const [LaunchTemplate, setLaunchTemplate] = useState("");
   const [vpcId, setVpcId] = useState("");
   const [subnetId, setSubnetId] = useState([]);
-  const [loadBalancer, setloadBalancer] = useState("");
-  const [warmUp, setwarmUp] = useState("0");
   const [desiredCapacity, setdesiredCapacity] = useState("0");
   const [minimumCapacity, setminimumCapacity] = useState("0");
   const [maximumCapacity, setmaximumCapacity] = useState("0");
+  const [open, setOpen] = useState(true);
 
   // temperory data getting from api calls
   const [VPC, setVPC] = useState([]);
@@ -45,8 +46,6 @@ const AutoScalingForm = () => {
         LaunchTemplate,
         vpcId,
         subnetId,
-        loadBalancer,
-        warmUp,
         desiredCapacity,
         minimumCapacity,
         maximumCapacity,
@@ -56,6 +55,7 @@ const AutoScalingForm = () => {
         .post(api, JSON.stringify(params))
         .then((response) => {
           console.log(response.data.body);
+          console.log(response)
         })
         .catch((error) => {
           console.log(error);
@@ -81,6 +81,7 @@ const AutoScalingForm = () => {
         setSubnet(subnetArray[0][0].subnet);
         setVpcId(subnetArray[0][0].VpcId);
         setSubnetValue(VPC.vpcId);
+        setOpen(false);
       } catch (error) {
         console.log(error);
       }
@@ -91,7 +92,7 @@ const AutoScalingForm = () => {
         const data = JSON.parse(response.data.body);
         const temp = Object.values(data);
         setlaunchTemplateArray(temp);
-        if(launchTemplateArray) setLaunchTemplate(temp[0].LaucnhTemplateName)
+        if (launchTemplateArray) setLaunchTemplate(temp[0].LaucnhTemplateName);
       } catch (error) {
         console.log(error);
       }
@@ -103,8 +104,7 @@ const AutoScalingForm = () => {
   function validation() {
     if (!AutoScalingName) return "Write Auto Scaling Group Name";
     else if (!subnetId.length) return "Choose a Subnet";
-    else if (!loadBalancer) return "Enter a name for Load Balancer";
-    else if (!maximumCapacity < minimumCapacity)
+    else if (maximumCapacity < minimumCapacity)
       return "Minimum Capacity cant be greater than Maximum Capacity";
     else return true;
   }
@@ -123,6 +123,12 @@ const AutoScalingForm = () => {
 
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <ToastContainer />
       <form onSubmit={handleSubmit} className="launch-form">
         <h3 className="pb-3">Auto Scaling Group</h3>
@@ -213,27 +219,6 @@ const AutoScalingForm = () => {
           </ul>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="loadbalancer-name">LoadBalancer Name</label>
-          <input
-            type="text"
-            id="loadbalancer-name"
-            className="form-control"
-            value={loadBalancer}
-            onChange={(event) => setloadBalancer(event.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="warmup">Warm Up</label>
-          <input
-            type="number"
-            id="warmup"
-            className="form-control"
-            value={warmUp}
-            onChange={(event) => setwarmUp(event.target.value)}
-          />
-        </div>
 
         <div className="form-group">
           <label htmlFor="DesiredCapacity">Desired Capacity</label>
