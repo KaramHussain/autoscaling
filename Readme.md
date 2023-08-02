@@ -171,9 +171,9 @@ To create a custom control in Audit Manager that will use your new AWS Config Cu
 > <ol type="a">
 >     <li>Click on ‘Assessments’ on the left pane</li>
 >     <li>Click on ‘Create Assessment’</li>
->     <li>On the Specify assessment details tab –</li>
+>     <li>On the Specify assessment details tab</li>
 >     
-      > <ol type="i">
+> <ol type="i">
 >     <li>Enter an Assessment name</li>
 >     <li>Select the S3 bucket created in Step 6.</li>
 >     <li>Under Frameworks – pick the custom framework we created earlier in Step 16.</li>
