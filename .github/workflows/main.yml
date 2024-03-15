@@ -1,0 +1,17 @@
+name: Execute Script via SSH
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ssh-and-execute:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup SSH Agent
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.marketkey }}
+
+    - name: Run Script on Remote Server
+      run: ssh -o StrictHostKeyChecking=no ubuntu@54.173.78.186 '/home/ubuntu/script.sh'
